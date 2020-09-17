@@ -1,4 +1,4 @@
-# go_to_prod
+# GO to prod
 Production-level API.
 
 ## Goals:
