@@ -74,7 +74,7 @@ func MetricsMiddlewareWithConfig(config Config) echo.MiddlewareFunc {
 		Help:      "Number of HTTP operations",
 	}, []string{"status", "method", "handler"})
 
-	httpDuration := promauto.NewHistogramgit Vec(prometheus.HistogramOpts{
+	httpDuration := promauto.NewHistogramVec(prometheus.HistogramOpts{
 		Namespace: config.Namespace,
 		Subsystem: config.Subsystem,
 		Name:      httpRequestsDuration,
