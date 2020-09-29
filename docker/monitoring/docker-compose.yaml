@@ -9,7 +9,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     network_mode: "bridge"
   grafana:
     container_name: grafana
@@ -21,7 +21,9 @@ services:
 #    volumes:
 #      - ./grafana_db:/var/lib/grafana
     volumes:
-      - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./config/grafana/:/etc/grafana/provisioning/
+      - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
+
     depends_on:
       - prometheus
     ports:
