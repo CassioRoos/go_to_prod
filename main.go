@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/CassioRoos/go_to_prod/metrics"
+	"github.com/CassioRoos/go_to_prod/middleware"
 	"github.com/labstack/echo/v4"
 	echomiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/nicholasjackson/env"
@@ -15,9 +15,12 @@ func main() {
 	env.Parse()
 	echoInstance := echo.New()
 
+	newRelicApp := middleware.ConfigureNewRelic(echoInstance)
+
 	echoInstance.Use(echomiddleware.Logger())
 	echoInstance.Use(echomiddleware.Recover())
-	echoInstance.Use(metrics.MetricsMiddleware())
+	echoInstance.Use(middleware.MetricsMiddleware())
+	echoInstance.Use(middleware.NewRelicMiddleware(newRelicApp))
 
 	echoInstance.GET("/healthcheck", func(ctx echo.Context) error {
 		return ctx.JSON(http.StatusOK, "WORKING")
