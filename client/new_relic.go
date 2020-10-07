@@ -2,13 +2,10 @@ package client
 
 import (
 	"bytes"
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/labstack/echo/v4"
 	"github.com/newrelic/go-agent/v3/newrelic"
+	"io/ioutil"
+	"net/http"
 )
 
 const ContextTransactionKey = "NewRelicTransaction"
@@ -25,10 +22,6 @@ func prepareNewRelicExternalSegment(ctx echo.Context, request *http.Request) *ne
 		requestCopy.Body = ioutil.NopCloser(bytes.NewReader([]byte{}))
 		// Set headers empty to send to New Relic
 		requestCopy.Header = http.Header{}
-		// Remove GLBID from URL
-		if strings.Contains(requestCopy.URL.String(), "/glbid/") {
-			requestCopy.URL, _ = url.ParseRequestURI(strings.Split(requestCopy.URL.String(), "/glbid/")[0] + "/glbid/GLBID")
-		}
 
 		return newrelic.StartExternalSegment(txn, &requestCopy)
 	}
