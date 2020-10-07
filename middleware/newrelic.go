@@ -30,7 +30,7 @@ func ConfigureNewRelic(echoInstance *echo.Echo) *newrelic.Application {
 			useProxy = true
 		}
 		newRelicApp, err := newrelic.NewApplication(
-			newrelic.ConfigAppName("Family API"),
+			newrelic.ConfigAppName("Go to Prod"),
 			newrelic.ConfigLicense(licenseKeyEnvVar),
 			func(config *newrelic.Config) {
 				if useProxy {
