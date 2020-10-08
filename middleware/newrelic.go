@@ -3,13 +3,11 @@ package middleware
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"github.com/labstack/echo/v4"
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"net/http"
-	"net/url"
-	"strconv"
+	"io/ioutil"
 	"os"
+	"strconv"
 )
 
 func ConfigureNewRelic(echoInstance *echo.Echo) *newrelic.Application {
@@ -21,24 +19,24 @@ func ConfigureNewRelic(echoInstance *echo.Echo) *newrelic.Application {
 
 	if err == nil && newRelicEnable {
 		licenseKeyEnvVar := os.Getenv("NEW_RELIC_LICENSE_KEY")
-		proxyURL, _ := url.Parse(os.Getenv("NEW_RELIC_PROXY_URL"))
-		useProxy := false
-		if proxyURL.String() == "" {
-			fmt.Println(fmt.Sprintf("Error when parsing new relic proxy url - %e", err ))
-			//log.Error("Error when parsing new relic proxy url", zap.Error(err))
-		} else {
-			useProxy = true
-		}
+		//proxyURL, _ := url.Parse(os.Getenv("NEW_RELIC_PROXY_URL"))
+		//useProxy := false
+		//if proxyURL.String() == "" {
+		//	fmt.Println(fmt.Sprintf("Error when parsing new relic proxy url - %e", err ))
+		//	//log.Error("Error when parsing new relic proxy url", zap.Error(err))
+		//} else {
+		//	useProxy = true
+		//}
 		newRelicApp, err := newrelic.NewApplication(
 			newrelic.ConfigAppName("Go to Prod"),
 			newrelic.ConfigLicense(licenseKeyEnvVar),
-			func(config *newrelic.Config) {
-				if useProxy {
-					config.Transport = &http.Transport{
-						Proxy: http.ProxyURL(proxyURL),
-					}
-				}
-			},
+			//func(config *newrelic.Config) {
+			//	if useProxy {
+			//		config.Transport = &http.Transport{
+			//			Proxy: http.ProxyURL(proxyURL),
+			//		}
+			//	}
+			//},
 		)
 		if err == nil {
 			//log.Info("New Relic ENABLED")
